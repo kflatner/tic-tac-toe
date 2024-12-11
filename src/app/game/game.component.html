@@ -1,0 +1,39 @@
+<div class="main-container">
+  <h1 class="mat-display-2" style="font-weight: 900; text-align: center; margin: 15px 0;color: #fff">Tic-Tac-Toe</h1>
+
+  <div *ngIf="game.gameStatus === GameStatus.START" class="field d-flex justify-content-center flex-column align-items-center">
+    <input type="text" [(ngModel)]="playerOneName" placeholder="Enter Player 1 Name" class="player-input">
+    <input type="text" [(ngModel)]="playerTwoName" placeholder="Enter Player 2 Name" class="player-input">
+    <button (click)="startGame()" mat-raised-button color="accent" class="start-game-button">Start Game Now!</button>
+  </div>
+
+  <div *ngIf="game.gameStatus !== GameStatus.START" class="game-area">
+    <div class="scoreboard left">
+      <div class="score player-one">{{ playerOneName }} (Player 1): {{ playerOneScore }}</div>
+    </div>
+
+    <div class="game-board">
+      <div *ngIf="game.gameStatus === GameStatus.PLAYING" class="current-status">{{ currentPlayerMessage }}</div>
+
+      <div class="game-field">
+        <div class="subfield"
+             *ngFor="let position of [0, 1, 2, 3, 4, 5, 6, 7, 8]"
+             (click)="clickSubfield(position)"
+             [attr.position]="position"
+             [class.player-one]="game.gamefield[position] === 1"
+             [class.player-two]="game.gamefield[position] === 2">
+          {{ game.gamefield[position] === 1 ? 'X' : (game.gamefield[position] === 2 ? 'O' : '') }}
+        </div>
+      </div>
+
+      <div *ngIf="game.gameStatus === GameStatus.STOP || game.gameStatus === GameStatus.DRAW" class="field d-flex flex-column justify-content-center">
+        <div class="result-message">{{ resultMessage }}</div>
+        <button (click)="playAgain()" mat-raised-button color="accent" class="play-again-button">Play Again</button>
+      </div>
+    </div>
+
+    <div class="scoreboard right">
+      <div class="score player-two">{{ playerTwoName }} (Player 2): {{ playerTwoScore }}</div>
+    </div>
+  </div>
+</div>
